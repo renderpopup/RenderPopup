@@ -152,7 +152,18 @@ export default function EventDetail() {
     <UserLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Image */}
-        <div className="h-64 md:h-96 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-6"></div>
+        <div className="h-64 md:h-96 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-6 relative overflow-hidden">
+          {event.image_url && (
+            <img 
+              src={event.image_url} 
+              alt={event.title}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          )}
+        </div>
         
         {/* Event Header */}
         <div className="bg-white rounded-lg p-6 md:p-8 mb-6">

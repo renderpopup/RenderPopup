@@ -119,8 +119,19 @@ export default function EventList() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map(event => (
               <div key={event.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-                {/* Event Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600"></div>
+                {/* Event Image */}
+                <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 relative overflow-hidden">
+                  {event.image_url && (
+                    <img 
+                      src={event.image_url} 
+                      alt={event.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  )}
+                </div>
                 
                 {/* Event Content */}
                 <div className="p-5">
