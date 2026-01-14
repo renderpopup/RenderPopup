@@ -2,3 +2,12 @@
 @source '../**/*.{js,ts,jsx,tsx}';
 
 @import 'tw-animate-css';
+
+/* Noto Sans KR 폰트 적용 */
+* {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}

@@ -110,3 +110,4 @@ export function useApplicationMutations() {
   return { apply, updateStatus, checkApplied, loading, error };
 }
 
+

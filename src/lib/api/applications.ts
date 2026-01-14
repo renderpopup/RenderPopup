@@ -117,3 +117,4 @@ export async function getApplicationStats() {
   return { total, pending, approved, rejected };
 }
 
+

@@ -92,3 +92,4 @@ export async function uploadBusinessRegistration(userId: string, file: File) {
   return urlData.publicUrl;
 }
 
+

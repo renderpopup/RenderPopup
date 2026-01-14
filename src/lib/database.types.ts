@@ -242,3 +242,4 @@ export type CounterProposal = Tables<'counter_proposals'>
 export type BrandProfile = Tables<'brand_profiles'>
 export type Profile = Tables<'profiles'>
 
+

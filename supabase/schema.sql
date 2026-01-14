@@ -371,3 +371,4 @@ INSERT INTO events (title, summary, description, date, location, organizer, cate
 - 네트워킹',
  '2025-02-25', '서울 중구 더플라자호텔', '여성경제인협회', '비즈니스', 'closed', '여성 직장인 및 사업가', 180);
 
+

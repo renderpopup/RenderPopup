@@ -34,3 +34,4 @@ WHERE title LIKE '%리빙%' OR title LIKE '%인테리어%';
 UPDATE events SET image_url = 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=600&fit=crop' 
 WHERE image_url IS NULL;
 
+

@@ -70,3 +70,4 @@ CREATE POLICY "Users can delete their own business documents" ON storage.objects
     AND (storage.foldername(name))[1] = auth.uid()::text
   );
 
+
