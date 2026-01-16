@@ -1,9 +1,55 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import UserLayout from '../layout/UserLayout';
-import { mockApplications, mockEvents } from '../../data/mockData';
-import { Calendar, MapPin, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { useAuth } from '../../../lib/contexts/AuthContext';
+import { getUserApplications } from '../../../lib/api/applications';
+import { Calendar, MapPin, CheckCircle, Clock, XCircle, Loader2 } from 'lucide-react';
+
+interface ApplicationWithEvent {
+  id: string;
+  event_id: string;
+  user_id: string;
+  user_name: string;
+  user_email: string;
+  status: 'pending' | 'approved' | 'rejected';
+  applied_at: string;
+  events: {
+    id: string;
+    title: string;
+    date: string;
+    location: string;
+    category: string;
+    status: string;
+  } | null;
+}
 
 export default function MyApplications() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [applications, setApplications] = useState<ApplicationWithEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      if (!user) return;
+
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getUserApplications(user.id);
+        setApplications(data as ApplicationWithEvent[]);
+      } catch (err) {
+        console.error('Error fetching applications:', err);
+        setError('신청 내역을 불러오는데 실패했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchApplications();
+  }, [user]);
+
   const getStatusInfo = (status: string) => {
     const config = {
       pending: {
@@ -27,16 +73,54 @@ export default function MyApplications() {
     };
     return config[status as keyof typeof config];
   };
-  
-  // 사용자의 신청 목록 (실제로는 로그인한 사용자의 데이터를 가져와야 함)
-  const userApplications = mockApplications.slice(0, 3);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
+  // 로그인 체크
+  if (!user) {
+    return (
+      <UserLayout>
+        <div className="max-w-4xl mx-auto px-4 py-12 text-center">
+          <p className="text-gray-600 mb-4">로그인이 필요합니다.</p>
+          <button
+            onClick={() => navigate('/login')}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            로그인하기
+          </button>
+        </div>
+      </UserLayout>
+    );
+  }
   
   return (
     <UserLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl mb-6">내 신청</h1>
-        
-        {userApplications.length === 0 ? (
+
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <span className="ml-3 text-gray-600">신청 내역을 불러오는 중...</span>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+            <p className="text-red-700">{error}</p>
+          </div>
+        )}
+
+        {/* No Applications */}
+        {!loading && !error && applications.length === 0 && (
           <div className="bg-white rounded-lg p-12 text-center">
             <p className="text-gray-500 mb-6">아직 신청한 행사가 없습니다.</p>
             <Link
@@ -46,10 +130,13 @@ export default function MyApplications() {
               행사 둘러보기
             </Link>
           </div>
-        ) : (
+        )}
+
+        {/* Applications List */}
+        {!loading && !error && applications.length > 0 && (
           <div className="space-y-4">
-            {userApplications.map(application => {
-              const event = mockEvents.find(e => e.id === application.eventId);
+            {applications.map(application => {
+              const event = application.events;
               if (!event) return null;
               
               const statusInfo = getStatusInfo(application.status);
@@ -89,7 +176,7 @@ export default function MyApplications() {
                     
                     <div className="flex flex-col items-end gap-2">
                       <span className="text-sm text-gray-500">
-                        신청일: {application.appliedAt}
+                        신청일: {formatDate(application.applied_at)}
                       </span>
                       <Link
                         to={`/events/${event.id}`}

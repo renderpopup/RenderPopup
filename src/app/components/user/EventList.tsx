@@ -11,8 +11,11 @@ export default function EventList() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState('all');
   
-  const categories = ['all', 'IT/기술', '비즈니스', '디자인', '마케팅'];
+  // 대구경북 행사 위주 카테고리
+  const categories = ['all', '플리마켓', '박람회', '팝업', '전시회', '축제'];
+  const statuses = ['all', 'open', 'upcoming', 'closed'];
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -21,6 +24,7 @@ export default function EventList() {
         setError(null);
         const data = await getEvents({
           category: selectedCategory !== 'all' ? selectedCategory : undefined,
+          status: selectedStatus !== 'all' ? selectedStatus : undefined,
           search: searchTerm || undefined,
         });
         setEvents(data);
@@ -34,7 +38,7 @@ export default function EventList() {
 
     const debounce = setTimeout(fetchEvents, 300);
     return () => clearTimeout(debounce);
-  }, [searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory, selectedStatus]);
   
   const getStatusBadge = (status: string) => {
     const styles = {
@@ -87,6 +91,20 @@ export default function EventList() {
                     {cat === 'all' ? '전체 카테고리' : cat}
                   </option>
                 ))}
+              </select>
+            </div>
+
+            {/* Status Filter */}
+            <div className="relative">
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="w-full md:w-40 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+              >
+                <option value="all">전체 상태</option>
+                <option value="open">신청 가능</option>
+                <option value="upcoming">오픈 예정</option>
+                <option value="closed">마감</option>
               </select>
             </div>
           </div>
