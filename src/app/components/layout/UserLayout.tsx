@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { CalendarDays, LogIn, User, LogOut, Loader2 } from 'lucide-react';
+import { CalendarDays, LogIn, User, LogOut, Loader2, Shield } from 'lucide-react';
 import { useAuth } from '../../../lib/contexts/AuthContext';
 import { signOut } from '../../../lib/api';
 import { useState } from 'react';
@@ -11,7 +11,7 @@ interface UserLayoutProps {
 export default function UserLayout({ children }: UserLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading, isAdmin } = useAuth();
   const [loggingOut, setLoggingOut] = useState(false);
 
   const handleLogout = async () => {
@@ -76,6 +76,16 @@ export default function UserLayout({ children }: UserLayoutProps) {
                 <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
               ) : user ? (
                 <div className="flex items-center gap-3">
+                  {/* 관리자 전환 버튼 */}
+                  {isAdmin && (
+                    <Link
+                      to="/admin/dashboard"
+                      className="flex items-center gap-2 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm"
+                    >
+                      <Shield className="w-4 h-4" />
+                      <span className="hidden sm:inline">관리자</span>
+                    </Link>
+                  )}
                   <span className="hidden sm:inline text-sm text-gray-600">
                     {profile?.name || user.email}
                   </span>
