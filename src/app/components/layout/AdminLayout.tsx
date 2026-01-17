@@ -1,5 +1,8 @@
-import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Calendar, Users, MessageSquare, BarChart3, LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Calendar, Users, MessageSquare, BarChart3, LogOut, Home, Loader2 } from 'lucide-react';
+import { useAuth } from '../../../lib/contexts/AuthContext';
+import { signOut } from '../../../lib/api';
+import { useState } from 'react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -7,6 +10,21 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { profile } = useAuth();
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setLoggingOut(false);
+    }
+  };
   
   const navItems = [
     { path: '/admin/dashboard', icon: LayoutDashboard, label: '대시보드' },
@@ -22,6 +40,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <aside className="w-64 bg-white border-r border-gray-200 hidden lg:block fixed h-full">
         <div className="p-6">
           <h1 className="font-bold text-xl text-gray-800">관리자 페이지</h1>
+          {profile && (
+            <p className="text-sm text-gray-500 mt-1">{profile.name || profile.email}</p>
+          )}
         </div>
         
         <nav className="px-4 space-y-1">
@@ -47,22 +68,44 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           })}
         </nav>
         
-        <div className="absolute bottom-0 w-64 p-4">
+        <div className="absolute bottom-0 w-64 p-4 space-y-2">
+          {/* 사용자 페이지로 전환 버튼 */}
           <Link
-            to="/admin/login"
-            className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg w-full"
+            to="/"
+            className="flex items-center gap-3 px-4 py-3 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg w-full"
           >
-            <LogOut className="w-5 h-5" />
-            <span>로그아웃</span>
+            <Home className="w-5 h-5" />
+            <span>사용자 페이지</span>
           </Link>
+          
+          {/* 로그아웃 버튼 */}
+          <button
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg w-full disabled:opacity-50"
+          >
+            {loggingOut ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <LogOut className="w-5 h-5" />
+            )}
+            <span>{loggingOut ? '로그아웃 중...' : '로그아웃'}</span>
+          </button>
         </div>
       </aside>
       
       {/* Main Content */}
       <div className="flex-1 lg:ml-64">
         {/* Mobile Header */}
-        <header className="lg:hidden bg-white border-b border-gray-200 p-4">
+        <header className="lg:hidden bg-white border-b border-gray-200 p-4 flex justify-between items-center">
           <h1 className="font-bold text-xl text-gray-800">관리자 페이지</h1>
+          <Link
+            to="/"
+            className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg text-sm"
+          >
+            <Home className="w-4 h-4" />
+            <span>사용자</span>
+          </Link>
         </header>
         
         <main className="p-4 sm:p-6 lg:p-8">
