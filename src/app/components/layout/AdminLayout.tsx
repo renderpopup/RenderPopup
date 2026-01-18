@@ -39,10 +39,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 hidden lg:block fixed h-full">
         <div className="p-6">
-          <h1 className="font-bold text-xl text-gray-800">관리자 페이지</h1>
-          {profile && (
-            <p className="text-sm text-gray-500 mt-1">{profile.name || profile.email}</p>
-          )}
+          <Link to="/" className="block">
+            <span className="text-2xl tracking-tight text-gray-900" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
+              RenderPopup
+            </span>
+          </Link>
+          <div className="flex items-center gap-2 mt-2">
+            <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-medium rounded">Admin</span>
+            {profile && (
+              <span className="text-sm text-gray-500">{profile.name || profile.email}</span>
+            )}
+          </div>
         </div>
         
         <nav className="px-4 space-y-1">
@@ -98,7 +105,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <div className="flex-1 lg:ml-64">
         {/* Mobile Header */}
         <header className="lg:hidden bg-white border-b border-gray-200 p-4 flex justify-between items-center">
-          <h1 className="font-bold text-xl text-gray-800">관리자 페이지</h1>
+          <div className="flex items-center gap-2">
+            <span className="text-xl tracking-tight text-gray-900" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
+              RenderPopup
+            </span>
+            <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-medium rounded">Admin</span>
+          </div>
           <Link
             to="/"
             className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg text-sm"

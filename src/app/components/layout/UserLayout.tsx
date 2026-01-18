@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { CalendarDays, LogIn, User, LogOut, Loader2, Shield } from 'lucide-react';
+import { LogIn, User, LogOut, Loader2, Shield } from 'lucide-react';
 import { useAuth } from '../../../lib/contexts/AuthContext';
 import { signOut } from '../../../lib/api';
 import { useState } from 'react';
@@ -33,9 +33,10 @@ export default function UserLayout({ children }: UserLayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <CalendarDays className="w-8 h-8 text-blue-600" />
-              <span className="font-semibold text-lg md:text-xl">행사요약</span>
+            <Link to="/" className="flex items-center">
+              <span className="text-2xl md:text-3xl tracking-tight" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
+                RenderPopup
+              </span>
             </Link>
             
             {/* Navigation */}
@@ -158,7 +159,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
       <footer className="bg-white border-t border-gray-200 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <p className="text-center text-gray-500">
-            © 2025 AI 기반 행사 요약 & 간편 신청 플랫폼. All rights reserved.
+            © 2025 RenderPopup. All rights reserved.
           </p>
         </div>
       </footer>

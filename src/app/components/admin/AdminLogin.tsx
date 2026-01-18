@@ -42,11 +42,15 @@ export default function AdminLogin() {
       <div className="max-w-md w-full">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-            <Shield className="w-8 h-8 text-white" />
+          <Link to="/" className="inline-block mb-4">
+            <span className="text-3xl tracking-tight text-gray-900" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
+              RenderPopup
+            </span>
+          </Link>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="px-2 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded">Admin</span>
           </div>
-          <h1 className="text-2xl font-semibold mb-2">관리자 페이지</h1>
-          <p className="text-gray-600">행사요약 관리자 페이지</p>
+          <p className="text-gray-600">관리자 페이지</p>
         </div>
         
         {/* Login Form */}

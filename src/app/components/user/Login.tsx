@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CalendarDays, Mail, Lock, Loader2 } from 'lucide-react';
+import { Mail, Lock, Loader2 } from 'lucide-react';
 import { signIn, signInWithGoogle } from '../../../lib/api';
 
 // Google Icon Component
@@ -82,9 +82,10 @@ export default function Login() {
       <div className="max-w-md w-full">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-2">
-            <CalendarDays className="w-10 h-10 text-blue-600" />
-            <span className="text-2xl font-semibold">행사요약</span>
+          <Link to="/" className="inline-block mb-2">
+            <span className="text-3xl tracking-tight text-gray-900" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
+              RenderPopup
+            </span>
           </Link>
           <p className="text-gray-600">AI 기반 행사 요약 & 간편 신청</p>
         </div>
